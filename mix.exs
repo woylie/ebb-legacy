@@ -10,6 +10,7 @@ defmodule Ebb.MixProject do
       escript: escript(),
       deps: deps(),
       aliases: aliases(),
+      test_coverage: [tool: ExCoveralls],
       preferred_cli_env: [
         "coveralls.github": :test,
         "coveralls.html": :test,
