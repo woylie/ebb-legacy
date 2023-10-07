@@ -9,7 +9,12 @@ defmodule Ebb.MixProject do
       start_permanent: Mix.env() == :prod,
       escript: escript(),
       deps: deps(),
-      aliases: aliases()
+      aliases: aliases(),
+      preferred_cli_env: [
+        "coveralls.github": :test,
+        "coveralls.html": :test,
+        "coveralls.json": :test
+      ]
     ]
   end
 
@@ -27,6 +32,9 @@ defmodule Ebb.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
+      {:credo, "~> 1.7.0", only: [:dev, :test], runtime: false},
+      {:dialyxir, "~> 1.4.0", only: [:dev, :test], runtime: false},
+      {:excoveralls, "~> 0.10", only: :test},
       {:jason, "~> 1.4"},
       {:tzdata, "~> 1.1"},
       {:yaml_elixir, "~> 2.9"}
