@@ -21,9 +21,17 @@ defmodule Ebb.DaysOff do
 
   defp calculate_taken_and_left_days(year, allowed_days, dates) do
     taken_days =
-      dates
-      |> Map.keys()
-      |> Enum.count(&(&1.year == year))
+      Enum.map(dates, fn
+        {date, description} ->
+          if date.year == year do
+            if String.ends_with?(description, " (h)"),
+              do: 0.5,
+              else: 1
+          else
+            0
+          end
+      end)
+      |> Enum.sum()
 
     days_left = allowed_days - taken_days
     {allowed_days, taken_days, days_left}

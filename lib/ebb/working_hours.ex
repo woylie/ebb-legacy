@@ -68,15 +68,24 @@ defmodule Ebb.WorkingHours do
   end
 
   defp get_hours_for_day(date, working_days) do
-    case Date.day_of_week(date) do
-      1 -> working_days.monday
-      2 -> working_days.tuesday
-      3 -> working_days.wednesday
-      4 -> working_days.thursday
-      5 -> working_days.friday
-      6 -> working_days.saturday
-      7 -> working_days.sunday
-    end
+    {date, half_or_full} =
+      case date do
+        {_, _} = v -> v
+        d -> {d, :full}
+      end
+
+    hours =
+      case Date.day_of_week(date) do
+        1 -> working_days.monday
+        2 -> working_days.tuesday
+        3 -> working_days.wednesday
+        4 -> working_days.thursday
+        5 -> working_days.friday
+        6 -> working_days.saturday
+        7 -> working_days.sunday
+      end
+
+    if half_or_full == :half, do: 0.5 * hours, else: hours
   end
 
   defp get_days_off(%Configuration{
@@ -87,11 +96,16 @@ defmodule Ebb.WorkingHours do
     holidays
     |> Map.merge(sick_days)
     |> Map.merge(vacation_days)
-    |> Map.keys()
+    |> Enum.map(fn
+      {date, description} ->
+        if String.ends_with?(description, " (h)"),
+          do: {date, :half},
+          else: {date, :full}
+    end)
   end
 
   defp filter_dates_in_range(dates, start_date, end_date) do
-    Enum.reject(dates, fn date ->
+    Enum.reject(dates, fn {date, _} ->
       Date.compare(date, start_date) == :lt or
         Date.compare(date, end_date) == :gt
     end)

@@ -23,7 +23,7 @@ working_days:
 holidays:
   2023-10-01: National Sports Day
 
-# Configuration for vacation days
+# Configuration for vacation days - for half days, append (h) to the description
 vacation_days:
   2023-09-01: Summer vacation
 
