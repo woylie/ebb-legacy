@@ -39,11 +39,17 @@ defmodule Ebb.CLI do
     config = Configuration.read_config()
     year = DateTime.now!(config.timezone).year
 
-    {allowed_vacation_days, taken_vacation_days, vacation_days_left} =
-      DaysOff.calculate_vacation_days(year, config)
+    %{
+      allowed: allowed_vacation_days,
+      taken: taken_vacation_days,
+      left: vacation_days_left
+    } = DaysOff.calculate_vacation_days(year, config)
 
-    {allowed_sick_days, taken_sick_days, sick_days_left} =
-      DaysOff.calculate_sick_days(year, config)
+    %{
+      allowed: allowed_sick_days,
+      taken: taken_sick_days,
+      left: sick_days_left
+    } = DaysOff.calculate_sick_days(year, config)
 
     print_table([{"Year", to_string(year)}])
 

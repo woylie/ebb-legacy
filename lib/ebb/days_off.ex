@@ -22,7 +22,7 @@ defmodule Ebb.DaysOff do
   defp calculate_taken_and_left_days(year, allowed_days, dates) do
     taken_days = dates |> Enum.map(&day_factor(&1, year)) |> Enum.sum()
     days_left = allowed_days - taken_days
-    {allowed_days, taken_days, days_left}
+    %{allowed: allowed_days, taken: taken_days, left: days_left}
   end
 
   defp day_factor({date, description}, year) do
