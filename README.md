@@ -53,6 +53,14 @@ supported due to the need to copy the `tzdata` data folder from `deps`.
 
 ## Usage
 
+Record your work time with [Watson](https://github.com/TailorDev/Watson). Use
+Ebb to check your time balance.
+
+Ebb will calculate the time balance for the time window from `start_date` set
+in the configuration until the end of today. The current Watson time frame is
+included in the calculation. Configured vacation days, sick days and holidays
+are considered.
+
 - `ebb balance` - Print current time balance
 - `ebb daysoff` - Prints the taken and remaining days off for the current year.
 - `ebb config` - Print current configuration.
