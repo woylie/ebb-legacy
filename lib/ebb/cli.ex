@@ -12,6 +12,9 @@ defmodule Ebb.CLI do
   @seconds_per_hour 3600
   @seconds_per_minutes 60
 
+  @doc """
+  Main function for the escript.
+  """
   def main(["balance" | _]) do
     config = Configuration.read_config()
     today = config.time_zone |> DateTime.now!() |> DateTime.to_date()

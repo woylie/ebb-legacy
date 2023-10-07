@@ -7,6 +7,14 @@ defmodule Ebb.WorkingHours do
 
   @seconds_per_hour 3600
 
+  @doc """
+  Takes an end date (usually today) and returns the number of expected work
+  seconds since the start date from the configuration.
+
+  Considers working days, vacation days, sick days and holidays in the
+  calculation.
+  """
+  @spec calculate_expected_work_seconds(Date.t(), Configuration.t()) :: float
   def calculate_expected_work_seconds(
         end_date,
         %Configuration{

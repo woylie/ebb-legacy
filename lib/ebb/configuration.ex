@@ -39,6 +39,10 @@ defmodule Ebb.Configuration do
             sick_days: %{},
             allowed_days_off: %{}
 
+  @doc """
+  Reads, parses and validates the configuration file.
+  """
+  @spec read_config() :: t()
   def read_config do
     config_path()
     |> File.read!()

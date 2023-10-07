@@ -5,6 +5,16 @@ defmodule Ebb.Watson do
 
   alias Ebb.Configuration
 
+  @doc """
+  Generates a report using the Watson CLI with all frames since the start date
+  set in the configuration.
+
+  Returns the start date and the total logged time in seconds.
+  """
+  @spec report(Configuration.t()) :: %{
+          start_date: Date.t(),
+          total_time_in_seconds: integer
+        }
   def report(%Configuration{} = config) do
     watson_report = Jason.decode!(run_watson_report(config.start_date))
 
