@@ -1,0 +1,37 @@
+# Configures the time zone
+# see https://en.wikipedia.org/wiki/List_of_tz_database_time_zones
+timezone: Asia/Tokyo
+
+# Default start date for window in which you want to calculate the time balance
+start_date: 2023-01-01
+
+# Time adjustment from the previous year - not supported yet
+time_adjustment: 0h 0m
+
+# Configuration for working days and hours
+working_days:
+  monday: 8
+  tuesday: 8
+  wednesday: 8
+  thursday: 8
+  friday: 4
+  saturday: 0
+  sunday: 0
+
+# Configuration for holidays - these days do not count against your allowed
+# number of vacation days or sick days
+holidays:
+  2023-10-01: National Sports Day
+
+# Configuration for vacation days
+vacation_days:
+  2023-09-01: Summer vacation
+
+# Configuration for sick days
+sick_days:
+  2023-08-01: Common cold
+
+# Configuration for allowed days off
+allowed_days_off:
+  vacation_days: 30
+  sick_days: 10
