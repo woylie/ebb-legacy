@@ -65,52 +65,55 @@ defmodule Ebb.Configuration do
   end
 
   defp validate!(map) do
-    allowed_days_off =
-      map |> Map.fetch!("allowed_days_off") |> validate_allowed_days_off!()
-
-    working_days = map |> Map.fetch!("working_days") |> validate_working_days!()
-
     %__MODULE__{
-      allowed_days_off: allowed_days_off,
-      holidays: map |> Map.fetch!("holidays") |> validate_days!(),
-      vacation_days: map |> Map.fetch!("vacation_days") |> validate_days!(),
-      sick_days: map |> Map.fetch!("sick_days") |> validate_days!(),
-      start_date: map |> Map.fetch!("start_date") |> Date.from_iso8601!(),
-      time_adjustment_in_seconds:
-        map |> Map.fetch!("time_adjustment") |> validate_duration!(),
-      time_zone: map |> Map.fetch!("time_zone") |> validate_time_zone!(),
-      working_days: working_days
+      allowed_days_off: validate_allowed_days_off!(map),
+      holidays: validate_days!(map, "holidays"),
+      vacation_days: validate_days!(map, "vacation_days"),
+      sick_days: validate_days!(map, "sick_days"),
+      start_date: validate_start_date!(map),
+      time_adjustment_in_seconds: validate_time_adjustment!(map),
+      time_zone: validate_time_zone!(map),
+      working_days: validate_working_days!(map)
     }
   end
 
-  defp validate_days!(%{} = days) do
-    Enum.into(days, %{}, fn {date_str, description} ->
-      {Date.from_iso8601!(date_str), description}
-    end)
-  end
-
-  defp validate_days!(nil), do: %{}
-
-  defp validate_allowed_days_off!(map) do
+  defp validate_allowed_days_off!(%{"allowed_days_off" => map}) do
     %{
       vacation_days: Map.fetch!(map, "vacation_days"),
       sick_days: Map.fetch!(map, "sick_days")
     }
   end
 
-  defp validate_working_days!(map) do
-    %{
-      1 => Map.fetch!(map, "monday"),
-      2 => Map.fetch!(map, "tuesday"),
-      3 => Map.fetch!(map, "wednesday"),
-      4 => Map.fetch!(map, "thursday"),
-      5 => Map.fetch!(map, "friday"),
-      6 => Map.fetch!(map, "saturday"),
-      7 => Map.fetch!(map, "sunday")
-    }
+  defp validate_days!(%{} = map, key) do
+    case Map.get(map, key) do
+      nil ->
+        %{}
+
+      %{} = date_map ->
+        Enum.into(date_map, %{}, fn {date_str, description} ->
+          {Date.from_iso8601!(date_str), description}
+        end)
+    end
   end
 
-  defp validate_time_zone!(tz) do
+  defp validate_start_date!(%{"start_date" => start_date}) do
+    Date.from_iso8601!(start_date)
+  end
+
+  defp validate_time_adjustment!(%{"time_adjustment" => s}) do
+    parts = String.split(s, " ")
+
+    Enum.reduce(parts, 0, fn part, seconds ->
+      case Integer.parse(part) do
+        {n, "d"} -> n * @seconds_per_day + seconds
+        {n, "h"} -> n * @seconds_per_hour + seconds
+        {n, "m"} -> n * @seconds_per_minute + seconds
+        {n, "s"} -> n + seconds
+      end
+    end)
+  end
+
+  defp validate_time_zone!(%{"time_zone" => tz}) do
     unless Tzdata.canonical_zone?(tz) do
       raise """
       Invalid time zone
@@ -122,16 +125,15 @@ defmodule Ebb.Configuration do
     tz
   end
 
-  defp validate_duration!(s) do
-    parts = String.split(s, " ")
-
-    Enum.reduce(parts, 0, fn part, seconds ->
-      case Integer.parse(part) do
-        {n, "d"} -> n * @seconds_per_day + seconds
-        {n, "h"} -> n * @seconds_per_hour + seconds
-        {n, "m"} -> n * @seconds_per_minute + seconds
-        {n, "s"} -> n + seconds
-      end
-    end)
+  defp validate_working_days!(%{"working_days" => map}) do
+    %{
+      1 => Map.fetch!(map, "monday"),
+      2 => Map.fetch!(map, "tuesday"),
+      3 => Map.fetch!(map, "wednesday"),
+      4 => Map.fetch!(map, "thursday"),
+      5 => Map.fetch!(map, "friday"),
+      6 => Map.fetch!(map, "saturday"),
+      7 => Map.fetch!(map, "sunday")
+    }
   end
 end
