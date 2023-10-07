@@ -11,6 +11,7 @@ defmodule Ebb.WorkingHours do
         end_date,
         %Configuration{
           start_date: start_date,
+          time_adjustment: time_adjustment,
           working_days: working_days
         } = config
       ) do
@@ -24,7 +25,11 @@ defmodule Ebb.WorkingHours do
 
     days_off = calculate_hours_off(end_date, config)
 
-    (full_week_hours + remaining_days_hours - days_off) * @seconds_per_hour
+    time_adjustment_in_hours = time_adjustment / @seconds_per_hour
+
+    (full_week_hours + remaining_days_hours - time_adjustment_in_hours -
+       days_off) *
+      @seconds_per_hour
   end
 
   defp calculate_weeks_and_days(end_date, start_date) do

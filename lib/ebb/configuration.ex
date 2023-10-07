@@ -3,6 +3,10 @@ defmodule Ebb.Configuration do
   Defines a Configuration struct and decode/encode functions.
   """
 
+  @seconds_per_day 86400
+  @seconds_per_hour 3600
+  @seconds_per_minute 60
+
   defstruct timezone: "Etc/UTC",
             start_date: nil,
             time_adjustment: nil,
@@ -45,7 +49,8 @@ defmodule Ebb.Configuration do
       vacation_days: map |> Map.fetch!("vacation_days") |> validate_days!(),
       sick_days: map |> Map.fetch!("sick_days") |> validate_days!(),
       start_date: map |> Map.fetch!("start_date") |> Date.from_iso8601!(),
-      time_adjustment: Map.fetch!(map, "time_adjustment"),
+      time_adjustment:
+        map |> Map.fetch!("time_adjustment") |> validate_duration!(),
       timezone: map |> Map.fetch!("timezone") |> validate_timezone!(),
       working_days: working_days
     }
@@ -88,5 +93,18 @@ defmodule Ebb.Configuration do
     end
 
     tz
+  end
+
+  defp validate_duration!(s) do
+    parts = String.split(s, " ")
+
+    Enum.reduce(parts, 0, fn part, seconds ->
+      case Integer.parse(part) do
+        {n, "d"} -> n * @seconds_per_day + seconds
+        {n, "h"} -> n * @seconds_per_hour + seconds
+        {n, "m"} -> n * @seconds_per_minute + seconds
+        {n, "s"} -> n + seconds
+      end
+    end)
   end
 end
