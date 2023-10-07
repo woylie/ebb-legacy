@@ -68,7 +68,7 @@ defmodule Ebb.CLI do
 
   def main(["config" | _]) do
     config = Configuration.read_config()
-    IO.inspect(config)
+    IO.puts("#{inspect(config, pretty: true)}")
   end
 
   def main(_) do

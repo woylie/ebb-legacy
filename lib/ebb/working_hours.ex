@@ -74,17 +74,7 @@ defmodule Ebb.WorkingHours do
         d -> {d, :full}
       end
 
-    hours =
-      case Date.day_of_week(date) do
-        1 -> working_days.monday
-        2 -> working_days.tuesday
-        3 -> working_days.wednesday
-        4 -> working_days.thursday
-        5 -> working_days.friday
-        6 -> working_days.saturday
-        7 -> working_days.sunday
-      end
-
+    hours = Map.fetch!(working_days, Date.day_of_week(date))
     if half_or_full == :half, do: 0.5 * hours, else: hours
   end
 

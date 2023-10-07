@@ -3,7 +3,7 @@ defmodule Ebb.Configuration do
   Defines a Configuration struct and decode/encode functions.
   """
 
-  @seconds_per_day 86400
+  @seconds_per_day 86_400
   @seconds_per_hour 3600
   @seconds_per_minute 60
 
@@ -73,13 +73,13 @@ defmodule Ebb.Configuration do
 
   defp validate_working_days!(map) do
     %{
-      monday: Map.fetch!(map, "monday"),
-      tuesday: Map.fetch!(map, "tuesday"),
-      wednesday: Map.fetch!(map, "wednesday"),
-      thursday: Map.fetch!(map, "thursday"),
-      friday: Map.fetch!(map, "friday"),
-      saturday: Map.fetch!(map, "saturday"),
-      sunday: Map.fetch!(map, "sunday")
+      1 => Map.fetch!(map, "monday"),
+      2 => Map.fetch!(map, "tuesday"),
+      3 => Map.fetch!(map, "wednesday"),
+      4 => Map.fetch!(map, "thursday"),
+      5 => Map.fetch!(map, "friday"),
+      6 => Map.fetch!(map, "saturday"),
+      7 => Map.fetch!(map, "sunday")
     }
   end
 
