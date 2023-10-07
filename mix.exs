@@ -14,6 +14,9 @@ defmodule Ebb.MixProject do
         "coveralls.github": :test,
         "coveralls.html": :test,
         "coveralls.json": :test
+      ],
+      dialyzer: [
+        plt_file: {:no_warn, ".plts/dialyzer.plt"}
       ]
     ]
   end
