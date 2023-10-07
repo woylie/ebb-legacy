@@ -136,13 +136,8 @@ defmodule Ebb.CLI do
     hours = div(remaining_after_days, @seconds_per_hour)
     remaining_after_hours = rem(remaining_after_days, @seconds_per_hour)
 
-    minutes =
-      remaining_after_hours
-      |> div(@seconds_per_minutes)
-
-    remaining_seconds =
-      remaining_after_hours
-      |> rem(@seconds_per_minutes)
+    minutes = div(remaining_after_hours, @seconds_per_minutes)
+    remaining_seconds = rem(remaining_after_hours, @seconds_per_minutes)
 
     parts =
       [d: days, h: hours, m: minutes, s: remaining_seconds]
