@@ -7,9 +7,32 @@ defmodule Ebb.Configuration do
   @seconds_per_hour 3600
   @seconds_per_minute 60
 
-  defstruct timezone: "Etc/UTC",
-            start_date: nil,
-            time_adjustment: nil,
+  @type t :: %__MODULE__{
+          time_zone: Calendar.time_zone(),
+          start_date: Date.t(),
+          time_adjustment_in_seconds: integer,
+          working_days: working_days(),
+          holidays: date_map(),
+          vacation_days: date_map(),
+          sick_days: date_map(),
+          allowed_days_off: allowed_days_off()
+        }
+
+  @type date_map :: %{optional(Date.t()) => String.t()}
+  @type allowed_days_off :: %{sick_days: integer, vacation_days: integer}
+  @type working_days :: %{
+          1 => non_neg_integer,
+          2 => non_neg_integer,
+          3 => non_neg_integer,
+          4 => non_neg_integer,
+          5 => non_neg_integer,
+          6 => non_neg_integer,
+          7 => non_neg_integer
+        }
+
+  defstruct time_zone: "Etc/UTC",
+            start_date: ~D[3000-01-01],
+            time_adjustment_in_seconds: 0,
             working_days: %{},
             holidays: %{},
             vacation_days: %{},
@@ -49,9 +72,9 @@ defmodule Ebb.Configuration do
       vacation_days: map |> Map.fetch!("vacation_days") |> validate_days!(),
       sick_days: map |> Map.fetch!("sick_days") |> validate_days!(),
       start_date: map |> Map.fetch!("start_date") |> Date.from_iso8601!(),
-      time_adjustment:
+      time_adjustment_in_seconds:
         map |> Map.fetch!("time_adjustment") |> validate_duration!(),
-      timezone: map |> Map.fetch!("timezone") |> validate_timezone!(),
+      time_zone: map |> Map.fetch!("time_zone") |> validate_time_zone!(),
       working_days: working_days
     }
   end
@@ -83,7 +106,7 @@ defmodule Ebb.Configuration do
     }
   end
 
-  defp validate_timezone!(tz) do
+  defp validate_time_zone!(tz) do
     unless Tzdata.canonical_zone?(tz) do
       raise """
       Invalid time zone

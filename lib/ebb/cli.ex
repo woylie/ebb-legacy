@@ -13,7 +13,7 @@ defmodule Ebb.CLI do
 
   def main(["balance" | _]) do
     config = Configuration.read_config()
-    today = config.timezone |> DateTime.now!() |> DateTime.to_date()
+    today = config.time_zone |> DateTime.now!() |> DateTime.to_date()
 
     %{start_date: start_date, total_time_in_seconds: total_time_in_seconds} =
       Watson.report(config)
@@ -37,7 +37,7 @@ defmodule Ebb.CLI do
 
   def main(["daysoff" | _]) do
     config = Configuration.read_config()
-    year = DateTime.now!(config.timezone).year
+    year = DateTime.now!(config.time_zone).year
 
     %{
       allowed: allowed_vacation_days,

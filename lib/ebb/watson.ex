@@ -6,7 +6,7 @@ defmodule Ebb.Watson do
   alias Ebb.Configuration
 
   def report(%Configuration{} = config) do
-    watson_report = Jason.decode!(run_watson_report(config))
+    watson_report = Jason.decode!(run_watson_report(config.start_date))
 
     %{
       start_date: fetch_start_date!(watson_report, config),
@@ -14,8 +14,8 @@ defmodule Ebb.Watson do
     }
   end
 
-  defp run_watson_report(%Configuration{} = config) do
-    from = Date.to_iso8601(config.start_date)
+  defp run_watson_report(%Date{} = start_date) do
+    from = Date.to_iso8601(start_date)
 
     {result, 0} =
       System.cmd("watson", ["report", "--json", "--current", "--from", from])
@@ -27,7 +27,7 @@ defmodule Ebb.Watson do
     watson_report
     |> Map.fetch!("timespan")
     |> Map.fetch!("from")
-    |> parse_datetime!(config.timezone)
+    |> parse_datetime!(config.time_zone)
     |> DateTime.to_date()
   end
 
@@ -35,8 +35,8 @@ defmodule Ebb.Watson do
     Map.fetch!(watson_report, "time")
   end
 
-  defp parse_datetime!(s, timezone) do
+  defp parse_datetime!(s, time_zone) do
     {:ok, dt, _} = DateTime.from_iso8601(s)
-    DateTime.shift_zone!(dt, timezone)
+    DateTime.shift_zone!(dt, time_zone)
   end
 end
