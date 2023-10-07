@@ -17,8 +17,9 @@ calculating the time balance in a flex time working environment.
 
 ## Prerequisites
 
-You need [Elixir](https://elixir-lang.org/install.html) to be installed on your
-system.
+[Elixir](https://elixir-lang.org/install.html) and
+[Watson CLI](https://tailordev.github.io/Watson/#installation) need to be
+installed on your system.
 
 ## Installation
 
@@ -53,6 +54,7 @@ supported due to the need to copy the `tzdata` data folder from `deps`.
 ## Usage
 
 - `ebb balance` - Print current time balance
+- `ebb daysoff` - Prints the taken and remaining days off for the current year.
 - `ebb config` - Print current configuration.
 
 ## Example output
