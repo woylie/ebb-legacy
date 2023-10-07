@@ -7,7 +7,9 @@ calculating the time balance in a flex time working environment.
 
 - Prints time balance.
 - Considers vacation days, holidays and sick days.
+- Supports half days off.
 - Allows to configure working hours per weekday.
+- Time adjustment for the current window.
 - No documentation.
 - No tests.
 - Not extensible.
