@@ -8,6 +8,7 @@ defmodule Ebb.CLI do
   alias Ebb.Watson
   alias Ebb.WorkingHours
 
+  @seconds_per_day 86_400
   @seconds_per_hour 3600
   @seconds_per_minutes 60
 
@@ -124,20 +125,33 @@ defmodule Ebb.CLI do
   end
 
   defp seconds_to_duration(seconds) when is_integer(seconds) do
-    hours = div(seconds, @seconds_per_hour)
-    remaining_after_hours = rem(seconds, @seconds_per_hour)
+    {sign, seconds} = if seconds < 0, do: {"-", -seconds}, else: {"", seconds}
+
+    days = div(seconds, @seconds_per_day)
+    remaining_after_days = rem(seconds, @seconds_per_day)
+
+    hours = div(remaining_after_days, @seconds_per_hour)
+    remaining_after_hours = rem(remaining_after_days, @seconds_per_hour)
 
     minutes =
       remaining_after_hours
       |> div(@seconds_per_minutes)
-      |> pad_zeroes()
 
     remaining_seconds =
       remaining_after_hours
       |> rem(@seconds_per_minutes)
-      |> pad_zeroes()
 
-    "#{hours}h #{minutes}m #{remaining_seconds}s"
+    parts =
+      [d: days, h: hours, m: minutes, s: remaining_seconds]
+      |> Enum.drop_while(fn {suffix, i} ->
+        i in [0, "0", "00"] && suffix != :s
+      end)
+      |> Enum.map_join(" ", fn
+        {suffix, i} when suffix in [:m, :s] -> "#{pad_zeroes(i)}#{suffix}"
+        {suffix, i} -> "#{i}#{suffix}"
+      end)
+
+    "#{sign}#{parts}"
   end
 
   defp pad_zeroes(value) when is_integer(value) do
