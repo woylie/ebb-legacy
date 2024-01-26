@@ -55,7 +55,7 @@ defmodule Ebb.WorkingHours do
   defp calculate_remaining_days_hours(0, _, _), do: 0
 
   defp calculate_remaining_days_hours(remaining_days, today, working_days) do
-    start_date = Date.add(today, -remaining_days)
+    start_date = Date.add(today, -remaining_days + 1)
     range = Date.range(start_date, today)
 
     Enum.reduce(range, 0, fn date, hours ->
