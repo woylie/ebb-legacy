@@ -60,7 +60,7 @@ jobs:
         run: mix hex.audit
       - name: Run Tests
         run: mix coveralls.json --warnings-as-errors
-      - uses: codecov/codecov-action@v3
+      - uses: codecov/codecov-action@v4
         with:
           files: ./cover/excoveralls.json
       - name: Run Dialyzer
