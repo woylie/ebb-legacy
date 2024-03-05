@@ -85,6 +85,7 @@ defmodule Ebb.CLI do
     IO.puts("""
     ebb balance - Print current time balance.
     ebb config - Print configuration.
+    ebb daysoff - Print summary of vacation and sick days.
     """)
   end
 
