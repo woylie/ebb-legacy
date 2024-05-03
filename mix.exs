@@ -40,6 +40,7 @@ defmodule Ebb.MixProject do
       {:dialyxir, "~> 1.4.0", only: [:dev, :test], runtime: false},
       {:excoveralls, "~> 0.10", only: :test},
       {:jason, "~> 1.4"},
+      {:mix_audit, "~> 2.1", only: [:dev, :test], runtime: false},
       {:tzdata, "~> 1.1"},
       {:yaml_elixir, "~> 2.9"}
     ]
