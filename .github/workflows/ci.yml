@@ -62,7 +62,7 @@ jobs:
         run: mix deps.audit
       - name: Run Tests
         run: mix coveralls.json --warnings-as-errors
-      - uses: codecov/codecov-action@v4
+      - uses: codecov/codecov-action@v5
         with:
           files: ./cover/excoveralls.json
       - name: Run Dialyzer
