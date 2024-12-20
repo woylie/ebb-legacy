@@ -1,8 +1,9 @@
 name: CI
 
 env:
-  ELIXIR_VERSION: "1.17"
+  ELIXIR_VERSION: "1.18"
   OTP_VERSION: "27"
+  UBUNTU_VERSION: "24.04"
 
 on:
   push:
@@ -14,7 +15,7 @@ on:
 
 jobs:
   tests-and-code-quality:
-    runs-on: ubuntu-latest
+    runs-on: ubuntu-${{ env.UBUNTU_VERSION }}
     name: Tests and Code Quality
     env:
       GITHUB_TOKEN: ${{ secrets.GITHUB_TOKEN }}
