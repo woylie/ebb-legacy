@@ -1,0 +1,29 @@
+{
+  "$schema": "https://docs.renovatebot.com/renovate-schema.json",
+  "extends": [
+    "config:best-practices"
+  ],
+  "enabled": true,
+  "enabledManagers": [
+    "github-actions",
+    "mix",
+  ],
+  "reviewersFromCodeOwners": true,
+  "schedule": [
+    "every weekend"
+  ],
+  "timezone": "Europe/Copenhagen",
+  "lockFileMaintenance": {
+    "enabled": true
+  },
+  "rangeStrategy": "pin",
+  "packageRules": [
+    {
+      "matchDepTypes": [
+        "dev",
+        "devDependencies"
+      ],
+      "automerge": true
+    }
+  ]
+}
