@@ -36,13 +36,13 @@ defmodule Ebb.MixProject do
   # Run "mix help deps" to learn about dependencies.
   defp deps do
     [
-      {:credo, "~> 1.7.0", only: [:dev, :test], runtime: false},
-      {:dialyxir, "~> 1.4.0", only: [:dev, :test], runtime: false},
-      {:excoveralls, "~> 0.10", only: :test},
-      {:jason, "~> 1.4"},
-      {:mix_audit, "~> 2.1", only: [:dev, :test], runtime: false},
-      {:tzdata, "~> 1.1"},
-      {:yaml_elixir, "~> 2.9"}
+      {:credo, "== 1.7.11", only: [:dev, :test], runtime: false},
+      {:dialyxir, "== 1.4.5", only: [:dev, :test], runtime: false},
+      {:excoveralls, "== 0.18.5", only: :test},
+      {:jason, "== 1.4.4"},
+      {:mix_audit, "== 2.1.4", only: [:dev, :test], runtime: false},
+      {:tzdata, "== 1.1.3"},
+      {:yaml_elixir, "== 2.11.0"}
     ]
   end
 
