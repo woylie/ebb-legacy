@@ -4,7 +4,7 @@ A shabby CLI tool built on [Watson CLI](https://github.com/TailorDev/Watson) for
 calculating the time balance in a flex time working environment.
 
 > [!WARNING]
-> This project is no longer maintained. It has been replaced by a Rust-based successor: [https://github.com/woylie/ebb](Ebb).
+> This project is no longer maintained. It has been replaced by a stand-alone Rust-based successor: https://github.com/woylie/ebb.
 
 ## Features
 
